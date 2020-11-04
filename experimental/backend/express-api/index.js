@@ -1,5 +1,20 @@
 const express = require('express');
+const _bodyParsepack= require('body-parser');
 const app = express();
+const zip_comp = require('compression');
+
+//compress all http responses
+app.use(zip_comp());
+app.use(_bodyParsepack.json());
+
+//cross domain enable
+app.use(function (req,res,next){
+	res.header("Access-Control-Allow-Origin","*");
+res.header("Access-Control-Allow-Mathods", "GET,HEAD,OPTIONS,POST,PUT");
+res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, contentType,Content-Type, Accept,Authorization");
+next();
+}
+)
 
 const port = 3001;
 
