@@ -39,7 +39,7 @@ html, body {
     z-index: 1;
     -webkit-backface-visibility: hidden;
     -moz-osx-font-smoothing: grayscale;
-    background: #0d3280;
+    background: #e3e6ec;
     color: #fff;
     display: inline-block;
 }

@@ -22,7 +22,13 @@ const Home = () => (
                 The digital fragility index, through its graphic representation, reveals the digital exclusion zones in a given territory. </font><font style="vertical-align: inherit;">This tool allows you, whether you are a municipality, a department or a region, to compare your digital fragility index with other territories.</font></font></p>
             </div>
 			
-			<a href="cartographie-indicateurs-fragilite.html"  class="buttonlink" target="_blank"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Access the cartography</font></font></a>
+			   <a href="#"  class="buttonlink" target="_blank">
+				<font style="vertical-align: inherit;">
+					<font style="vertical-align: inherit;">
+					<nav>
+                     <Link   href="/profile">Access the cartography</Link>
+		           </nav>
+						</font></font></a>
 	     <div class="Cardslink">
 		 <h2><font style="vertical-align: inherit;"><font style="vertical-align: inherit;color: #0d3280;">The Four Indicators of Fragility</font></font></h2>
 		 <p class="para"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">The four indicators selected make it possible to create a global analysis based on access on the one hand (information, digital interfaces) and on skills on the other (use of an interface, administrative skills).
