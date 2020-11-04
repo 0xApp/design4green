@@ -6,10 +6,8 @@ const Header = () => (
 	<header class={style.header}>
 		<h1></h1>
 		<nav>
-		<img src="assets/icons/inr.jpg" alt="HTML5 Icon" style="width:128px;height:128px;"/>
-			<Link activeClassName={style.active} href="/">Home</Link>
-			{/* <Link activeClassName={style.active} href="/profile">Me</Link>
-			<Link activeClassName={style.active} href="/profile/john">John</Link> */}
+		<img src="assets/icons/inr.jpg" alt="HTML5 Icon" />
+			
 		</nav>
 	</header>
 );
