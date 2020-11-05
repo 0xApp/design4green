@@ -6,7 +6,8 @@ const Header = () => (
 	<header class={style.header}>
 		<h1></h1>
 		<nav>
-		<img src="assets/icons/inr.jpg" alt="HTML5 Icon" />
+		<Link   href="/"><img src="assets/icons/inr.jpg" alt="HTML5 Icon" /></Link>
+		
 			
 		</nav>
 	</header>
