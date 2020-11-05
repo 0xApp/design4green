@@ -32,18 +32,13 @@ namespace SampleApi.Controllers
             return await _service.GetMasterData();
         }
 
-        [HttpPost]
-        public SampleResponse Post(FragilityRequest request)
+        [HttpGet, HttpPost]
+        [Route("data")]
+        public async Task<IActionResult> Post(FragilityRequest request)
         {
-            var response = new SampleResponse();
-            var data = new string[1000];
-            for (int i = 0; i < 1000; i++)
-            {
-                data[i] = "";
-            }
-            response.Data = data;
+            var response = await _service.GetScore(request);
 
-            return response;
+            return Ok(response);
         }
         
     }
