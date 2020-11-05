@@ -90,11 +90,11 @@ router.post("/datas", async (req, res) => {
   }
 
   if (commune) {
-    foundcommune = await db.Commune_Master.findOne({
+    foundCommune = await db.Commune_Master.findOne({
       where: { Name: commune.data },
     });
-    if (foundcommune) {
-      where["LibCommune"] = foundcommune.Id;
+    if (foundCommune) {
+      where["LibCommune"] = foundCommune.Id;
     }
   }
 
