@@ -9,11 +9,21 @@ namespace migrator
 {
     public class Program
     {
+        private static int RegionIndex = 0;
+        private static int DepartmentIndex = 0;
+        private static int InterCommunaityIndex = 0;
+        private static int CommuneIndex = 0;
+
+        private static Dictionary<string, int> regionData = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        private static Dictionary<string, int> departmentData = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        private static Dictionary<string, int> interCommunalityData = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+        private static Dictionary<string, int> communeData = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
+
         public static async Task Main(string[] args)
         {
             Console.WriteLine("Hello World!");
             var builder = new SqliteConnectionStringBuilder();
-            builder.DataSource = "./data.db";
+            builder.DataSource = @"E:\design4green\migrator\data.db";
 
             var connection = new SqliteConnection(builder.ConnectionString);
             await connection.OpenAsync();
@@ -109,7 +119,7 @@ namespace migrator
             command.CommandText = commandQuery;
             command.CommandType = System.Data.CommandType.Text;
 
-            var columnParameters = new Dictionary<int, SqliteParameter>(21);
+            //var columnParameters = new Dictionary<int, SqliteParameter>(21);
 
             // var pNomCom = command.CreateParameter();
             // pNomCom.ParameterName = "NomCom";
@@ -184,18 +194,23 @@ namespace migrator
                 var scoreValues = scoreColumns.Select(kvp => ParseNumer(values[kvp.Key]).ToString());
                 var scoreValueQueries = String.Join(", ", scoreValues);
 
+                var regionId = await GetRegionId(values[LibRegionIndex], command);
+                var departmentId = await GetDepartmentId(values[LibDepartmentIndex], command);
+                var interCommuneId = await GetInterCommunanlityId(values[LibInterCommunalityIndex], command);
+                var communeId = await GetCommuneId(values[LibCommuneIndex], command);
+
                 var query = $"INSERT INTO fragility_score(NomCom, CodeIris, NomIris, LibRegion, LibDepartment, LibInterCommunality, LibCommune, DonneesInfraCommunal, PopulationScore, {columnNames}) " + 
-                $"VALUES({StringQueryValue(values[NomComIndex])}, {StringQueryValue(values[CodeIrisIndex])}, {StringQueryValue(values[NomIrisIndex])}, 0, 0, 0, 0, {donnesInfraCommuneValue}, {ParseNumer(values[PopulationScoreIndex])}, {scoreValueQueries})";
+                $"VALUES({StringQueryValue(values[NomComIndex])}, {StringQueryValue(values[CodeIrisIndex])}, {StringQueryValue(values[NomIrisIndex])}, {regionId}, {departmentId}, {interCommuneId}, {communeId}, {donnesInfraCommuneValue}, {ParseNumer(values[PopulationScoreIndex])}, {scoreValueQueries})";
 
                 command.CommandText = query;
                 await command.ExecuteNonQueryAsync();
 
                 count++;
 
-                if ((DateTime.Now - logTime).TotalSeconds >= 5)
+                if ((DateTime.Now - logTime).TotalSeconds >= 1)
                 {
                     logTime = DateTime.Now;
-                    Console.Write($"Processed: {count}");
+                    Console.WriteLine($"Processed: {count}");
                 }
             }
 
@@ -204,6 +219,90 @@ namespace migrator
             command.Dispose();
             connection.Close();
             connection.Dispose();
+        }
+
+        private async static Task<int> GetRegionId(string region, SqliteCommand command)
+        {
+            if (string.IsNullOrEmpty(region))
+            {
+                return 0;
+            }
+
+            if (regionData.ContainsKey(region))
+            {
+                return regionData[region];
+            }
+
+            var id = ++RegionIndex;
+            command.CommandText = $"INSERT INTO region_master(Id, Name) VALUES({id}, {StringQueryValue(region)})";
+            await command.ExecuteNonQueryAsync();
+
+            regionData.Add(region, id);
+
+            return id;
+        }
+
+        private async static Task<int> GetDepartmentId(string department, SqliteCommand command)
+        {
+            if (string.IsNullOrEmpty(department))
+            {
+                return 0;
+            }
+
+            if (departmentData.ContainsKey(department))
+            {
+                return departmentData[department];
+            }
+
+            var id = ++DepartmentIndex;
+            command.CommandText = $"INSERT INTO department_master(Id, Name) VALUES({id}, {StringQueryValue(department)})";
+            await command.ExecuteNonQueryAsync();
+
+            departmentData.Add(department, id);
+
+            return id;
+        }
+
+        private async static Task<int> GetInterCommunanlityId(string interCommune, SqliteCommand command)
+        {
+            if (string.IsNullOrEmpty(interCommune))
+            {
+                return 0;
+            }
+
+            if (interCommunalityData.ContainsKey(interCommune))
+            {
+                return interCommunalityData[interCommune];
+            }
+
+            var id = ++InterCommunaityIndex;
+            command.CommandText = $"INSERT INTO intercommunalities_master(Id, Name) VALUES({id}, {StringQueryValue(interCommune)})";
+            await command.ExecuteNonQueryAsync();
+
+            interCommunalityData.Add(interCommune, id);
+
+            return id;
+        }
+
+        private async static Task<int> GetCommuneId(string commune, SqliteCommand command)
+        {
+            if (string.IsNullOrEmpty(commune))
+            {
+                return 0;
+            }
+
+            if (communeData.ContainsKey(commune))
+            {
+                return communeData[commune];
+            }
+
+            var id = ++CommuneIndex;
+            command.CommandText = $"INSERT INTO commune_master(Id, Name) VALUES({id}, {StringQueryValue(commune)})";
+            await command.ExecuteNonQueryAsync();
+
+            communeData.Add(commune, id);
+
+            return id;
         }
 
         static decimal ParseNumer(string text)
