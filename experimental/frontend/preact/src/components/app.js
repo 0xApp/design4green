@@ -12,7 +12,7 @@ const App = () => (
 		<Header />
 		<Router>
 			<Home path="/" />
-			<Profile path="/profile/"/>
+			<Profile path="/cartographie-indicateurs-fragilite/"/>
 		</Router>
 	</div>
 )

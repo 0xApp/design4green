@@ -79,7 +79,7 @@ const App = () => {
         <select
           style={{ marginLeft: '10px', padding: '5px' }}
         >
-          {}
+          {departmentList}
         </select>
 
         <label class={style.textAlign}>Intercommunalites</label>
