@@ -2,6 +2,7 @@ import { h, render, Component } from 'preact';
 
 import ReactFlexyTable from 'react-flexy-table'
 import 'react-flexy-table/dist/index.css'
+import style from './style.css';
 
 const App = () => {
   const data = [{
@@ -35,63 +36,61 @@ const App = () => {
     }
   ]
   return (
-
     <div style={{ margin: '100px 0px' }}>
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-3">
-            <div style={{ margin: '30px' }}>
-              <label>Region</label><br></br>
-              <select style={{ padding: '5px' }}
-              >
-                <option value={false}>Close</option>
-                <option value={true}>Open</option>
-              </select>
-            </div>
-            <div style={{ margin: '30px' }}>
-              <label>Department</label><br></br>
-              <select
-                style={{ padding: '5px' }}
-              >
-                <option value={false}>Close</option>
-                <option value={true}>Open</option>
-              </select>
-            </div>
-            <div style={{ margin: '30px' }}>
-              <label>Intercommunalites</label><br></br>
-              <select
-                style={{ padding: '5px' }}
-              >
-                <option value={false}>Close</option>
-                <option value={true}>Open</option>
-              </select>
-            </div>
-            <div style={{ margin: '30px' }}>
-              <label>Commune</label><br></br>
-              <select
-                style={{ padding: '5px' }}
-              >
-                <option value={false}>Close</option>
-                <option value={true}>Open</option>
-              </select>
-            </div>
-            <div style={{ margin: '30px' }}>
-              <label>Choix de Point Refeerence</label><br></br>
-              <select
-                style={{ padding: '5px' }}
-              >
-                <option value={false}>Close</option>
-                <option value={true}>Open</option>
-              </select>
-            </div>
-          </div>
-          <div class="col-sm-9">
-            <ReactFlexyTable
-              data={data}
-            />
-          </div>
+      <div style={{ margin: '30px' }}>
+        <label >Region</label>
+        <select style={{ marginLeft: '10px', padding: '5px' }}
+        >
+          <option value={false}>Close</option>
+          <option value={true}>Open</option>
+        </select>
+        <label class={style.textAlign}>Department</label>
+        <select
+          style={{ marginLeft: '10px', padding: '5px' }}
+        >
+          <option value={false}>Close</option>
+          <option value={true}>Open</option>
+        </select>
+
+        <label class={style.textAlign}>Intercommunalites</label>
+        <select
+          style={{ marginLeft: '10px', padding: '5px' }}
+        >
+          <option value={false}>Close</option>
+          <option value={true}>Open</option>
+        </select>
+
+        <label class={style.textAlign}>Commune</label>
+        <select
+          style={{ marginLeft: '10px', padding: '5px' }}
+        >
+          <option value={false}>Close</option>
+          <option value={true}>Open</option>
+        </select>
+
+        <label class={style.textAlign}>Choix de Point Refeerence</label>
+        <select
+          style={{ marginLeft: '10px', padding: '5px' }}
+        >
+          <option value={true}>Tout</option>
+          <option value={false}>Region</option>
+          <option value={false}>Department</option>
+          <option value={false}>Intercommunalite</option>
+        </select>
         </div>
+        <div>
+        <label class={style.textAlign}>Donnees infra-communales</label>
+        <select
+          style={{ margin: '10px', padding: '5px' }}
+        >
+          <option value={false}>Oui</option>
+          <option value={true}>Non</option>
+        </select>
+
       </div>
+      <ReactFlexyTable
+        data={data} className={style.tableCSS}
+      />
     </div>
   )
 }
