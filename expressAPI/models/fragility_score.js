@@ -71,6 +71,9 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Fragility_Score",
+      tableName: "fragility_score",
+      updatedAt: false,
+      createdAt: false,
     }
   );
   return Fragility_Score;

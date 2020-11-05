@@ -1,10 +1,6 @@
 {
   "development": {
-    "storage": "./db.sqlite3",
-    "dialect": "sqlite"
-  },
-  "production": {
-    "storage": "./db_prod.sqlite3",
+    "storage": "./data.sqlite3",
     "dialect": "sqlite"
   }
 }
