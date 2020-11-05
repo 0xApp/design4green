@@ -1,10 +1,28 @@
 import { h, render, Component } from 'preact';
 
-import ReactFlexyTable from 'react-flexy-table'
-import 'react-flexy-table/dist/index.css'
-import style from './style.css';
+import { FixedSizeGrid as Grid } from "react-window";
+import  style1 from "./style.css";
+const GUTTER_SIZE = 5;
+const COLUMN_WIDTH = 100;
+const ROW_HEIGHT = 35;
 
-const App = () => {
+const columns = [
+  {
+    key: "firstName",
+    name: "First Name",
+    width: 100
+  },
+  {
+    key: "lastName",
+    name: "Last Name",
+    width: 100
+  },
+  {
+    key: "email",
+    name: "Email"
+  }
+];
+
   const data = [{
     name: 'Ayaan',
     age: 26
@@ -25,16 +43,7 @@ const App = () => {
     age: 37
   }]
 
-  const columns = [
-    {
-      header: 'name',
-      key: 'user.name'
-    },
-    {
-      header: 'Actions',
-
-    }
-  ]
+  
 
   let regionList = data.length > 0
 		&& data.map((item, i) => {
@@ -65,38 +74,71 @@ const App = () => {
   }, this);
 
   
-  
 
+const Cell = ({ columnIndex, rowIndex, style }) => (
+  <div
+    className="GridItem"
+    style={{
+      ...style,
+      left: style.left + GUTTER_SIZE,
+      top: style.top + GUTTER_SIZE,
+      width: style.width - GUTTER_SIZE,
+      height: style.height - GUTTER_SIZE
+    }}
+  >
+    row {rowIndex}, col {columnIndex}
+  </div>
+);
+
+const Table = () => (
+  <Grid
+    className="Grid"
+    columnCount={20}
+    columnWidth={COLUMN_WIDTH + GUTTER_SIZE}
+    height={300}
+    rowCount={100}
+    rowHeight={ROW_HEIGHT + GUTTER_SIZE}
+    width={1340}
+      columns={columns}
+  >
+    {Cell}
+  </Grid>
+);
+
+
+
+export default function App() {
   return (
     <div style={{ margin: '100px 0px' }}>
+    <div className="App" style={{ height: 500 }}>
       <div style={{ margin: '30px' }}>
         <label >Region</label>
         <select style={{ marginLeft: '10px', padding: '5px' }}
         >
           {regionList}
         </select>
-        <label class={style.textAlign}>Department</label>
+        <label class={style1.textAlign}>Department</label>
         <select
           style={{ marginLeft: '10px', padding: '5px' }}
         >
           {departmentList}
         </select>
 
-        <label class={style.textAlign}>Intercommunalites</label>
+        <label class={style1.textAlign}>Intercommunalites</label>
         <select
           style={{ marginLeft: '10px', padding: '5px' }}
         >
           {intercommunaliteList}
         </select>
 
-        <label class={style.textAlign}>Commune</label>
+        <label class={style1.textAlign}>Commune</label>
         <select
           style={{ marginLeft: '10px', padding: '5px' }}
         >
           {communeList}
         </select>
 
-        <label class={style.textAlign}>Choix de Point Refeerence</label>
+        <label class={style1.textAlign}>Choix de Point Refeerence</label>
         <select
           style={{ marginLeft: '10px', padding: '5px' }}
         >
@@ -107,7 +149,7 @@ const App = () => {
         </select>
         </div>
         <div>
-        <label class={style.textAlign}>Donnees infra-communales</label>
+        <label class={style1.textAlign}>Donnees infra-communales</label>
         <select
           style={{ margin: '10px', padding: '5px' }}
         >
@@ -116,14 +158,11 @@ const App = () => {
         </select>
 
       </div>
-      <ReactFlexyTable
-        data={data} className={style.tableCSS}
-      />
+      <Table />
     </div>
-  )
+    </div>
+  );
 }
-
-export default App
 
 
 
