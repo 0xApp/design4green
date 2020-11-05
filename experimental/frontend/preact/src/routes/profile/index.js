@@ -35,37 +35,65 @@ const App = () => {
 
     }
   ]
+
+  let regionList = data.length > 0
+		&& data.map((item, i) => {
+		return (
+			<option key={i} value={item.name}>{item.age}</option>
+		)
+  }, this);
+
+  let departmentList = data.length > 0
+		&& data.map((item, i) => {
+		return (
+			<option key={i} value={item.name}>{item.age}</option>
+		)
+  }, this);
+
+  let intercommunaliteList = data.length > 0
+		&& data.map((item, i) => {
+		return (
+			<option key={i} value={item.name}>{item.age}</option>
+		)
+  }, this);
+
+  let communeList = data.length > 0
+		&& data.map((item, i) => {
+		return (
+			<option key={i} value={item.name}>{item.age}</option>
+		)
+  }, this);
+
+  
+  
+
   return (
     <div style={{ margin: '100px 0px' }}>
       <div style={{ margin: '30px' }}>
         <label >Region</label>
         <select style={{ marginLeft: '10px', padding: '5px' }}
         >
-          <option value={false}>Close</option>
-          <option value={true}>Open</option>
+          {regionList}
         </select>
         <label class={style.textAlign}>Department</label>
         <select
           style={{ marginLeft: '10px', padding: '5px' }}
         >
-          <option value={false}>Close</option>
-          <option value={true}>Open</option>
+          {departmentList}
         </select>
 
         <label class={style.textAlign}>Intercommunalites</label>
         <select
           style={{ marginLeft: '10px', padding: '5px' }}
         >
-          <option value={false}>Close</option>
-          <option value={true}>Open</option>
+          {intercommunaliteList}
         </select>
 
         <label class={style.textAlign}>Commune</label>
         <select
           style={{ marginLeft: '10px', padding: '5px' }}
         >
-          <option value={false}>Close</option>
-          <option value={true}>Open</option>
+          {communeList}
         </select>
 
         <label class={style.textAlign}>Choix de Point Refeerence</label>

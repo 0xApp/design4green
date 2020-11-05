@@ -27,7 +27,7 @@ const Home = () => (
 				<font style="vertical-align: inherit;">
 					<font style="vertical-align: inherit;">
 					<nav>
-                     <Link   href="/profile">Access the cartography</Link>
+                     <Link   href="/cartographie-indicateurs-fragilite">Access the cartography</Link>
 		           </nav>
 						</font></font></a>
 	     <div class="Cardslink">
