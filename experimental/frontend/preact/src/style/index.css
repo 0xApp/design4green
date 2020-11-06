@@ -33,13 +33,13 @@ html, body {
     padding: 1.3em 1em;
     border: none;
     background: none;
-    color: inherit;
     vertical-align: middle;
     position: relative;
     z-index: 1;
+    backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     -moz-osx-font-smoothing: grayscale;
-    background: #e3e6ec;
+    background-color: #e3e6ec;
     color: #fff;
     display: inline-block;
 }
