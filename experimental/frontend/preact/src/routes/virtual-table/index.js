@@ -56,30 +56,35 @@ const VirtualTable = () => {
 
     });
 
+    function getScores(scores){
+        return scores.map(item => {
+            return {
+                ...item,
+                accessAuxInterfaceNumber: Math.floor(item.accessAuxInterfaceNumber),
+                accessInformation: Math.floor(item.accessInformation),
+                competenceAdministrative: Math.floor(item.competenceAdministrative),
+                competenceSolaris: Math.floor(item.competenceSolaris),
+                globalAccess: Math.floor(item.globalAccess),
+                globalCompetence: Math.floor(item.globalCompetence),
+                populationScore: Math.floor(item.populationScore),
+                scoreGlobal: Math.floor(item.scoreGlobal),
+            }
+        });
+    }
+
     useEffect(() => {
         async function fetchData() {
-            const res = await fetch("http://146.59.227.253:3000/datas", requestOptions);
+            const res = await fetch("http://localhost:3000/datas", requestOptions);
             res
                 .json()
                 .then(response => {
-                    response.scores = response.scores.map(item => {
-                        return {
-                            ...item,
-                            accessAuxInterfaceNumber: Math.floor(item.accessAuxInterfaceNumber),
-                            accessInformation: Math.floor(item.accessInformation),
-                            competenceAdministrative: Math.floor(item.competenceAdministrative),
-                            competenceSolaris: Math.floor(item.competenceSolaris),
-                            globalAccess: Math.floor(item.globalAccess),
-                            globalCompetence: Math.floor(item.globalCompetence),
-                            populationScore: Math.floor(item.populationScore),
-                            scoreGlobal: Math.floor(item.scoreGlobal),
-                        }
-                    })
-                    setRowData(response.scores);
+                    var scores = getScores(response.scores);
+                    console.log('scores', scores);
+                    setRowData(scores);
                 })
                 .catch(err => console.log(err));
 
-            const filterResponse = await fetch("http://146.59.227.253:3000/master");
+            const filterResponse = await fetch("http://localhost:3000/master");
             filterResponse
                 .json()
                 .then(res => {
@@ -96,10 +101,10 @@ const VirtualTable = () => {
     useEffect(() => {
         async function fetchData() {
             requestOptions.body = JSON.stringify(criteria);
-            const res = await fetch("http://146.59.227.253:3000/datas", requestOptions);
+            const res = await fetch("http://localhost:3000/datas", requestOptions);
             res
                 .json()
-                .then(response => { setRowData(response.scores); })
+                .then(response => { setRowData(getScores(response.scores)); })
                 .catch(err => console.log(err));
         };
         fetchData();
@@ -153,7 +158,7 @@ const VirtualTable = () => {
         const tmpcriteria = { ...criteria };
         tmpcriteria.criteria.pageIndex = calculatedPageIndex;
         requestOptions.body = JSON.stringify(tmpcriteria);
-        return fetch("http://146.59.227.253:3000/datas", requestOptions)
+        return fetch("http://localhost:3000/datas", requestOptions)
             .then(res => res.json())
             .then(res => { setRowData([...rowData, ...res.scores]) })
             .catch(err => console.log(err));
