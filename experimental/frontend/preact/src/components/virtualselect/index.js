@@ -35,7 +35,7 @@ const VirtualSelect = ({ onSelectChange, name, options }) => {
                 placeholder="Search"
                 style={styles}
                 value={region}
-                onChange={(region) => { setRegion(region); onSelectChange(region, name); }}
+                onChange={(reg) => { setRegion(reg); onSelectChange(reg, name); }}
 
             //style={styles}
             /></div>

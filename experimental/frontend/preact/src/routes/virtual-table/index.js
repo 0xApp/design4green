@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useState, useEffect } from 'react';
 import { Column, Table, InfiniteLoader, AutoSizer } from 'react-virtualized';
 import 'react-virtualized/styles.css'; // only needs to be imported once
 import VirtualSelect from '../../components/virtualselect';
@@ -70,7 +69,6 @@ const VirtualTable = () => {
             filterResponse
                 .json()
                 .then(res => {
-                    console.log('res ', res);
                     setRegionOptions(getFormattedOptions(res.region_master));
                     setDepartmentOptions(getFormattedOptions(res.Department_Master));
                     setCommuneOptions(getFormattedOptions(res.Commune_Master));
@@ -83,7 +81,6 @@ const VirtualTable = () => {
 
     useEffect(() => {
         async function fetchData() {
-            console.log('effect pageIndex ');
             requestOptions.body = JSON.stringify(criteria);
             const res = await fetch("http://localhost:3000/datas", requestOptions);
             res
@@ -111,9 +108,7 @@ const VirtualTable = () => {
 
     }
     const loadMore = (indices) => {
-        console.log('indices ', indices)
         const calculatedPageIndex = calculatePageIndex(indices.startIndex);
-        console.log('calculatedPageIndex ', calculatedPageIndex)
         const tmpcriteria = { ...criteria };
         tmpcriteria.criteria.pageIndex = calculatedPageIndex;
         requestOptions.body = JSON.stringify(tmpcriteria);
