@@ -18,8 +18,8 @@ router.get("/master", async (req, res) => {
     return res.send({
       Commune_Master: commune_master,
       Department_Master: department_master,
-      interCommune_master: interCommune_master,
-      region_master: region_master,
+      InterCommune_Master: interCommune_master,
+      Region_Master: region_master,
     });
   } catch (err) {
     console.log(err);
@@ -53,65 +53,39 @@ router.post("/datas", async (req, res) => {
   } = criteria;
 
   let data = [];
-  let foundRegion;
-  let foundDepartment;
-  let foundIntercommnality;
-  let foundCommune;
   let offset = pageIndex ? pageIndex : 0;
   let limit = pageSize ? pageSize : 100;
 
   let where = {};
-  if (region) {
-    foundRegion = await db.Region_Master.findOne({
-      where: { Name: region.data },
-    });
-
-    if (foundRegion) {
-      if (region.exclude) {
-        where["LibRegion"] = { [Op.ne]: foundRegion.Id };
-      } else {
-        where["LibRegion"] = foundRegion.Id;
-      }
+  if (region && region.data) {
+    if (region.exclude) {
+      where["LibRegion"] = { [Op.ne]: region.data };
+    } else {
+      where["LibRegion"] = region.data;
     }
   }
 
-  if (department) {
-    foundDepartment = await db.Department_Master.findOne({
-      where: { Name: department.data },
-    });
-    if (foundDepartment) {
-      if (department.exclude) {
-        where["LibDepartment"] = { [Op.ne]: foundDepartment.Id };
-      } else {
-        where["LibDepartment"] = foundDepartment.Id;
-      }
+  if (department && department.data) {
+    if (department.exclude) {
+      where["LibDepartment"] = { [Op.ne]: department.data };
+    } else {
+      where["LibDepartment"] = department.data;
     }
   }
 
-  if (intercommnality) {
-    foundIntercommnality = await db.Intercommunalities_Master.findOne({
-      where: { Name: intercommnality.data },
-    });
-    if (foundIntercommnality) {
-      if (intercommnality.exclude) {
-        where["LibInterCommunality"] = { [Op.ne]: foundIntercommnality.Id };
-      } else {
-        where["LibInterCommunality"] = foundIntercommnality.Id;
-      }
+  if (intercommnality && intercommnality.data) {
+    if (intercommnality.exclude) {
+      where["LibInterCommunality"] = { [Op.ne]: intercommnality.data };
+    } else {
+      where["LibInterCommunality"] = intercommnality.data;
     }
   }
 
-  if (commune) {
-    foundCommune = await db.Commune_Master.findOne({
-      where: { Name: commune.data },
-    });
-
-    if (foundCommune) {
-      if (commune.exclude) {
-        where["LibCommune"] = { [Op.ne]: foundCommune.Id };
-      } else {
-        where["LibCommune"] = foundCommune.Id;
-      }
+  if (commune && commune.data) {
+    if (commune.exclude) {
+      where["LibCommune"] = { [Op.ne]: commune.data };
+    } else {
+      where["LibCommune"] = commune.data;
     }
   }
 
