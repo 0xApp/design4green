@@ -1,0 +1,26 @@
+{
+  "criteria": {
+    "region": {
+      "data": "abc",
+      "include": true
+    },
+    "department": {
+      "data": "abc",
+      "include": true
+    },
+    "intercommnality": {
+      "data": "abc",
+      "include": true
+    },
+    "commune": {
+      "data": "abc",
+      "include": true
+    },
+    "referencePoint": "ALL|REGION|DEPARTMENT|INTERCOMMUNALITE",
+    "scoreMinValue": 0,
+    "scoreMaxValue": -1,
+    "calcul": true,
+    "pageIndex": 0,
+    "pageSize": 100
+  }
+}

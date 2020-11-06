@@ -1,21 +1,36 @@
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-
+var cors = require("cors");
 var indexRouter = require("./routes/index");
 
+var whitelist = [
+  "http://sg-d4g.ddns.net:8082",
+  "http://146.59.227.253:8082",
+  "http://sg-d4g.ddns.net:80",
+  "http://146.59.227.253:80",
+];
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+};
+
 var app = express();
+app.use(cors(corsOptions));
+app.disable("x-powered-by");
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
 
-app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
