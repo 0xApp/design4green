@@ -2,6 +2,7 @@ var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
 var cors = require("cors");
+var compression = require("compression");
 var indexRouter = require("./routes/index");
 
 var corsOptions = {
@@ -12,6 +13,7 @@ var corsOptions = {
 
 var app = express();
 app.use(cors(corsOptions));
+app.use(compression());
 app.disable("x-powered-by");
 
 // view engine setup
