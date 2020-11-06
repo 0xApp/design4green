@@ -58,21 +58,35 @@ const VirtualTable = () => {
 
     useEffect(() => {
         async function fetchData() {
-            const res = await fetch("http://localhost:3000/datas", requestOptions);
-
+            const res = await fetch("http://146.59.227.253:3000/datas", requestOptions);
             res
                 .json()
-                .then(res => { setRowData(res.scores); })
+                .then(response => {
+                    response.scores = response.scores.map(item => {
+                        return {
+                            ...item,
+                            accessAuxInterfaceNumber: Math.floor(item.accessAuxInterfaceNumber),
+                            accessInformation: Math.floor(item.accessInformation),
+                            competenceAdministrative: Math.floor(item.competenceAdministrative),
+                            competenceSolaris: Math.floor(item.competenceSolaris),
+                            globalAccess: Math.floor(item.globalAccess),
+                            globalCompetence: Math.floor(item.globalCompetence),
+                            populationScore: Math.floor(item.populationScore),
+                            scoreGlobal: Math.floor(item.scoreGlobal),
+                        }
+                    })
+                    setRowData(response.scores);
+                })
                 .catch(err => console.log(err));
 
-            const filterResponse = await fetch("http://localhost:3000/master");
+            const filterResponse = await fetch("http://146.59.227.253:3000/master");
             filterResponse
                 .json()
                 .then(res => {
-                    setRegionOptions(getFormattedOptions(res.region_master));
+                    setRegionOptions(getFormattedOptions(res.Region_Master));
                     setDepartmentOptions(getFormattedOptions(res.Department_Master));
                     setCommuneOptions(getFormattedOptions(res.Commune_Master));
-                    setInterCommuneOptions(getFormattedOptions(res.interCommune_master));
+                    setInterCommuneOptions(getFormattedOptions(res.InterCommune_Master));
                 })
                 .catch(err => console.log(err));
         }
@@ -82,7 +96,7 @@ const VirtualTable = () => {
     useEffect(() => {
         async function fetchData() {
             requestOptions.body = JSON.stringify(criteria);
-            const res = await fetch("http://localhost:3000/datas", requestOptions);
+            const res = await fetch("http://146.59.227.253:3000/datas", requestOptions);
             res
                 .json()
                 .then(response => { setRowData(response.scores); })
@@ -93,10 +107,37 @@ const VirtualTable = () => {
 
 
     const onSelectChangeHandler = (selectedOption, name) => {
-
-        if (name === 'Region' || name === 'Department' || name === 'InterCommune' || name === 'Commune') {
+        if (name === 'Region') {
             const tmpcriteria = { ...criteria };
-            tmpcriteria.criteria.region.data = selectedOption.label;
+            if (!selectedOption) {
+                tmpcriteria.criteria.region.data = '';
+            } else {
+                tmpcriteria.criteria.region.data = selectedOption.value;
+            }
+            setCriteria(tmpcriteria);
+        } else if (name === 'Department') {
+            const tmpcriteria = { ...criteria };
+            if (!selectedOption) {
+                tmpcriteria.criteria.department.data = '';
+            } else {
+                tmpcriteria.criteria.department.data = selectedOption.value;
+            }
+            setCriteria(tmpcriteria);
+        } else if (name === 'InterCommune') {
+            const tmpcriteria = { ...criteria };
+            if (!selectedOption) {
+                tmpcriteria.criteria.intercommnality.data = '';
+            } else {
+                tmpcriteria.criteria.intercommnality.data = selectedOption.value;
+            }
+            setCriteria(tmpcriteria);
+        } else if (name === 'Commune') {
+            const tmpcriteria = { ...criteria };
+            if (!selectedOption) {
+                tmpcriteria.criteria.commune.data = '';
+            } else {
+                tmpcriteria.criteria.commune.data = selectedOption.value;
+            }
             setCriteria(tmpcriteria);
         }
 
@@ -112,13 +153,13 @@ const VirtualTable = () => {
         const tmpcriteria = { ...criteria };
         tmpcriteria.criteria.pageIndex = calculatedPageIndex;
         requestOptions.body = JSON.stringify(tmpcriteria);
-        return fetch("http://localhost:3000/datas", requestOptions)
+        return fetch("http://146.59.227.253:3000/datas", requestOptions)
             .then(res => res.json())
             .then(res => { setRowData([...rowData, ...res.scores]) })
             .catch(err => console.log(err));
     }
 
-    return (<div style={{ marginTop: '60px' }}>
+    return (<div style={{ marginTop: '40px' }}>
         <div style={{ display: 'flex' }}>
             <div style={{ marginLeft: '5px' }}><label>Region</label>
                 <VirtualSelect name={'Region'} options={regionOptions} onSelectChange={onSelectChangeHandler} />
