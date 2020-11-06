@@ -74,7 +74,7 @@ const VirtualTable = () => {
 
     useEffect(() => {
         async function fetchData() {
-            const res = await fetch("http://localhost:3000/datas", requestOptions);
+            const res = await fetch("http://146.59.227.253:3000/datas", requestOptions);
             res
                 .json()
                 .then(response => {
@@ -84,7 +84,7 @@ const VirtualTable = () => {
                 })
                 .catch(err => console.log(err));
 
-            const filterResponse = await fetch("http://localhost:3000/master");
+            const filterResponse = await fetch("http://146.59.227.253:3000/master");
             filterResponse
                 .json()
                 .then(res => {
@@ -101,7 +101,7 @@ const VirtualTable = () => {
     useEffect(() => {
         async function fetchData() {
             requestOptions.body = JSON.stringify(criteria);
-            const res = await fetch("http://localhost:3000/datas", requestOptions);
+            const res = await fetch("http://146.59.227.253:3000/datas", requestOptions);
             res
                 .json()
                 .then(response => { setRowData(getScores(response.scores)); })
@@ -160,7 +160,7 @@ const VirtualTable = () => {
         requestOptions.body = JSON.stringify(tmpcriteria);
         return fetch("http://localhost:3000/datas", requestOptions)
             .then(res => res.json())
-            .then(res => { setRowData([...rowData, ...res.scores]) })
+            .then(res => { setRowData([...rowData, getScores(...res.scores)]) })
             .catch(err => console.log(err));
     }
 
