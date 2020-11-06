@@ -36,25 +36,6 @@ router.get("/datas", (req, res) => {
     });
 });
 
-router.get("/master", async (req, res) => {
-  try {
-    const commune_master = await db.Commune_Master.findAll();
-    const department_master = await db.Department_Master.findAll();
-    const interCommune_master = await db.Intercommunalities_Master.findAll();
-    const region_master = await db.Region_Master.findAll();
-
-    return res.send({
-      Commune_Master: commune_master,
-      Department_Master: department_master,
-      interCommune_master: interCommune_master,
-      region_master: region_master,
-    });
-  } catch (err) {
-    console.log(err);
-    return res.send(err);
-  }
-});
-
 router.post("/datas", async (req, res) => {
   const body = req.body;
   const criteria = body.criteria;
