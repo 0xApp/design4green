@@ -37,11 +37,11 @@ Accept: application/json
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:82.0) Gecko/20100101 Firefox/82.0
 
 ###
-GET  http://146.59.227.253/fragility/filterdata HTTP/1.1
+GET  http://146.59.227.253:8080/fragility/filterdata HTTP/1.1
 
 
 ### server api
-POST http://146.59.227.253/fragility/data HTTP/1.1
+POST http://146.59.227.253:8080/fragility/data HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:82.0) Gecko/20100101 Firefox/82.0
