@@ -4,12 +4,6 @@ var path = require("path");
 var cors = require("cors");
 var indexRouter = require("./routes/index");
 
-var whitelist = [
-  "http://sg-d4g.ddns.net:8082",
-  "http://146.59.227.253:8082",
-  "http://sg-d4g.ddns.net:80",
-  "http://146.59.227.253:80",
-];
 var corsOptions = {
   origin: function (origin, callback) {
     callback(null, true);
