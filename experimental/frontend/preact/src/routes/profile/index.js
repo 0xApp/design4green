@@ -1,5 +1,3 @@
-import { h, render, Component } from 'preact';
-
 import { FixedSizeGrid as Grid } from "react-window";
 import  style1 from "./style.css";
 const GUTTER_SIZE = 5;
