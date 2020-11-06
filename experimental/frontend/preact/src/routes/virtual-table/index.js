@@ -87,11 +87,11 @@ const VirtualTable = () => {
             const filterResponse = await fetch("http://146.59.227.253:3000/master");
             filterResponse
                 .json()
-                .then(res => {
-                    setRegionOptions(getFormattedOptions(res.Region_Master));
-                    setDepartmentOptions(getFormattedOptions(res.Department_Master));
-                    setCommuneOptions(getFormattedOptions(res.Commune_Master));
-                    setInterCommuneOptions(getFormattedOptions(res.InterCommune_Master));
+                .then(response => {
+                    setRegionOptions(getFormattedOptions(response.Region_Master));
+                    setDepartmentOptions(getFormattedOptions(response.Department_Master));
+                    setCommuneOptions(getFormattedOptions(response.Commune_Master));
+                    setInterCommuneOptions(getFormattedOptions(response.InterCommune_Master));
                 })
                 .catch(err => console.log(err));
         }
@@ -106,7 +106,7 @@ const VirtualTable = () => {
                 .json()
                 .then(response => { setRowData(getScores(response.scores)); })
                 .catch(err => console.log(err));
-        };
+        }
         fetchData();
     }, [criteria]);
 
