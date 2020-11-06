@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { Column, Table, InfiniteLoader, AutoSizer } from 'react-virtualized';
 import 'react-virtualized/styles.css'; // only needs to be imported once
 import VirtualSelect from '../../components/virtualselect';
 
+let pageSize = 100;
 const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
         "criteria": {
             "pageIndex": 0,
-            "pageSize": 100,
+            "pageSize": pageSize,
             "referencePoint": "ALL"
         }
     })
@@ -22,11 +23,12 @@ const getFormattedOptions = (options) => {
 }
 const VirtualTable = () => {
     const [rowData, setRowData] = useState([]);
-    const [initialRowData, setInitialRowData] = useState([]);
+
     const [regionOptions, setRegionOptions] = useState([]);
     const [departmentOptions, setDepartmentOptions] = useState([]);
     const [communeOptions, setCommuneOptions] = useState([]);
     const [interCommuneOptions, setInterCommuneOptions] = useState([]);
+
     const [criteria, setCriteria] = useState({
         criteria: {
             region: {
@@ -58,15 +60,17 @@ const VirtualTable = () => {
     useEffect(() => {
         async function fetchData() {
             const res = await fetch("http://localhost:3000/datas", requestOptions);
+
             res
                 .json()
-                .then(res => { setRowData(res.scores); setInitialRowData(res.scores); })
+                .then(res => { setRowData(res.scores); })
                 .catch(err => console.log(err));
 
             const filterResponse = await fetch("http://localhost:3000/master");
             filterResponse
                 .json()
                 .then(res => {
+                    console.log('res ', res);
                     setRegionOptions(getFormattedOptions(res.region_master));
                     setDepartmentOptions(getFormattedOptions(res.Department_Master));
                     setCommuneOptions(getFormattedOptions(res.Commune_Master));
@@ -77,38 +81,48 @@ const VirtualTable = () => {
         fetchData();
     }, []);
 
-    useEffect(() => async function fetchData() {
-        requestOptions.body = JSON.stringify(criteria);
-        const res = await fetch("http://localhost:3000/datas", requestOptions);
-        res
-            .json()
-            .then(res => { setRowData(res.scores); setInitialRowData(res.scores); })
-            .catch(err => console.log(err));
-
+    useEffect(() => {
+        async function fetchData() {
+            console.log('effect pageIndex ');
+            requestOptions.body = JSON.stringify(criteria);
+            const res = await fetch("http://localhost:3000/datas", requestOptions);
+            res
+                .json()
+                .then(response => { setRowData(response.scores); })
+                .catch(err => console.log(err));
+        };
         fetchData();
     }, [criteria]);
 
+
     const onSelectChangeHandler = (selectedOption, name) => {
 
-        if (name === 'Region') {
+        if (name === 'Region' || name === 'Department' || name === 'InterCommune' || name === 'Commune') {
             const tmpcriteria = { ...criteria };
             tmpcriteria.criteria.region.data = selectedOption.label;
             setCriteria(tmpcriteria);
         }
-    }
-    const nameOptions = [
-        { label: "Caubous", value: 'Caubous', style: { width: '500px' } },
-        { label: "Vulvoz", value: 'Vulvoz', style: { width: '500px' } },
-        { label: "Clichy", value: 'Clichy', style: { width: '500px' } }
-    ]
-    const descOptions = [
-        { label: "311270000", value: "311270000", style: { width: '500px' } },
-        { label: "550390000", value: "550390000", style: { width: '500px' } },
-        { label: "550500000", value: "550500000", style: { width: '500px' } }
-    ]
-    const loadMore = (indices) => {
 
     }
+
+    const calculatePageIndex = (startIndex) => {
+        const calculatedPageIndex = startIndex / pageSize;
+        return calculatedPageIndex;
+
+    }
+    const loadMore = (indices) => {
+        console.log('indices ', indices)
+        const calculatedPageIndex = calculatePageIndex(indices.startIndex);
+        console.log('calculatedPageIndex ', calculatedPageIndex)
+        const tmpcriteria = { ...criteria };
+        tmpcriteria.criteria.pageIndex = calculatedPageIndex;
+        requestOptions.body = JSON.stringify(tmpcriteria);
+        return fetch("http://localhost:3000/datas", requestOptions)
+            .then(res => res.json())
+            .then(res => { setRowData([...rowData, ...res.scores]) })
+            .catch(err => console.log(err));
+    }
+
     return (<div style={{ marginTop: '60px' }}>
         <div style={{ display: 'flex' }}>
             <div style={{ marginLeft: '5px' }}><label>Region</label>
@@ -131,6 +145,7 @@ const VirtualTable = () => {
                 isRowLoaded={({ index }) => rowData[index]}
                 loadMoreRows={loadMore}
                 rowCount={1000000}
+                threshold={20}
             >
                 {({ onRowsRendered, registerChild }) => (
                     <AutoSizer>
