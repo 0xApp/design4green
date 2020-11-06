@@ -56,7 +56,7 @@ const VirtualTable = () => {
 
     });
 
-    function getScores(scores){
+    function getScores(scores) {
         return scores.map(item => {
             return {
                 ...item,
@@ -79,7 +79,6 @@ const VirtualTable = () => {
                 .json()
                 .then(response => {
                     var scores = getScores(response.scores);
-                    console.log('scores', scores);
                     setRowData(scores);
                 })
                 .catch(err => console.log(err));
@@ -158,9 +157,9 @@ const VirtualTable = () => {
         const tmpcriteria = { ...criteria };
         tmpcriteria.criteria.pageIndex = calculatedPageIndex;
         requestOptions.body = JSON.stringify(tmpcriteria);
-        return fetch("http://localhost:3000/datas", requestOptions)
+        return fetch("http://146.59.227.253:3000/datas", requestOptions)
             .then(res => res.json())
-            .then(res => { setRowData([...rowData, getScores(...res.scores)]) })
+            .then(res => { setRowData([...rowData, ...getScores(res.scores)]) })
             .catch(err => console.log(err));
     }
 
